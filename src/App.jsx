@@ -1,48 +1,20 @@
-import React, { useState, useContext } from 'react';
-import { AuthProvider, AuthContext } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
-import { ProductProvider } from './context/ProductContext';
-import Navbar from './components/Navbar';
-import LoginPage from './components/LoginPage';
-import ProductList from './components/ProductList';
-import CartPage from './components/CartPage';
-import WishlistPage from './components/WishlistPage';
-import DashboardPage from './components/DashboardPage';
-import AdminPanel from './components/AdminPanel';
+import React, { useContext } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, AuthContext } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import { ProductProvider } from "./context/ProductContext";
+import Navbar from "./components/Navbar";
+import LoginPage from "./components/LoginPage";
+import ProductList from "./components/ProductList";
+import CartPage from "./components/CartPage";
+import WishlistPage from "./components/WishlistPage";
+import DashboardPage from "./components/DashboardPage";
+import AdminPanel from "./components/AdminPanel";
 
-const AppContent = () => {
-  const [currentPage, setCurrentPage] = useState('home');
+// ✅ Protected Route to block unauthorized access
+const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
-
-  const renderPage = () => {
-    if (!user && currentPage !== 'login' && currentPage !== 'home') {
-      return <LoginPage setCurrentPage={setCurrentPage} />;
-    }
-
-    switch (currentPage) {
-      case 'login':
-        return <LoginPage setCurrentPage={setCurrentPage} />;
-      case 'home':
-        return <ProductList />;
-      case 'cart':
-        return <CartPage setCurrentPage={setCurrentPage} />;
-      case 'wishlist':
-        return <WishlistPage />;
-      case 'dashboard':
-        return <DashboardPage setCurrentPage={setCurrentPage} />;
-      case 'admin':
-        return <AdminPanel />;
-      default:
-        return <ProductList />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      {renderPage()}
-    </div>
-  );
+  return user ? children : <Navigate to="/login" replace />;
 };
 
 function App() {
@@ -50,7 +22,52 @@ function App() {
     <AuthProvider>
       <ProductProvider>
         <CartProvider>
-          <AppContent />
+          <div className="min-h-screen bg-gray-50">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<ProductList />} />
+              <Route path="/login" element={<LoginPage />} />
+              
+              <Route
+                path="/cart"
+                element={
+                  <ProtectedRoute>
+                    <CartPage />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route
+                path="/wishlist"
+                element={
+                  <ProtectedRoute>
+                    <WishlistPage />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <DashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminPanel />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* fallback for invalid routes */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </CartProvider>
       </ProductProvider>
     </AuthProvider>

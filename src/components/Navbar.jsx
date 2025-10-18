@@ -7,45 +7,49 @@ import {
   Home as HomeIcon,
   Shield,
 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 
-const Navbar = ({ currentPage, setCurrentPage }) => {
+const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const { cart, wishlist } = useContext(CartContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <nav className="bg-gradient-to-r from-blue-700 via-purple-600 to-indigo-700 text-white shadow-lg backdrop-blur-lg bg-opacity-90 sticky top-0 z-50">
-      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Brand & Navigation */}
           <div className="flex items-center space-x-6">
-            <h1
+            <Link
+              to="/"
               className="text-2xl font-extrabold tracking-wide cursor-pointer hover:scale-105 transition-transform"
-              onClick={() => setCurrentPage("home")}
             >
               Shop<span className="text-yellow-300">Hub</span>
-            </h1>
-            <button
-              onClick={() => setCurrentPage("home")}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition ${
-                currentPage === "home"
-                  ? "bg-white text-blue-700"
-                  : "hover:bg-white/20"
-              }`}
+            </Link>
+
+            <Link
+              to="/"
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg transition hover:bg-white/20"
             >
               <HomeIcon size={18} />
               <span className="font-medium">Products</span>
-            </button>
+            </Link>
           </div>
 
           {/* Right Section */}
           <div className="flex items-center gap-5">
-            {user && (
+            {user ? (
               <>
                 {/* Cart */}
-                <button
-                  onClick={() => setCurrentPage("cart")}
+                <Link
+                  to="/cart"
                   className="relative p-2 hover:scale-110 transition-transform"
                 >
                   <ShoppingCart size={24} />
@@ -54,11 +58,11 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
                       {cart.length}
                     </span>
                   )}
-                </button>
+                </Link>
 
                 {/* Wishlist */}
-                <button
-                  onClick={() => setCurrentPage("wishlist")}
+                <Link
+                  to="/wishlist"
                   className="relative p-2 hover:scale-110 transition-transform"
                 >
                   <Heart size={22} />
@@ -67,7 +71,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
                       {wishlist.length}
                     </span>
                   )}
-                </button>
+                </Link>
 
                 {/* Account & Logout */}
                 <div className="flex items-center gap-4 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm">
@@ -76,14 +80,11 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
                     alt={user.displayName || "User"}
                     className="w-8 h-8 rounded-full border-2 border-white/50 shadow"
                   />
-                  <button
-                    onClick={() => setCurrentPage("dashboard")}
-                    className="hover:underline"
-                  >
+                  <Link to="/dashboard" className="hover:underline">
                     My Account
-                  </button>
+                  </Link>
                   <button
-                    onClick={logout}
+                    onClick={handleLogout}
                     className="flex items-center space-x-1 hover:text-yellow-300 transition"
                   >
                     <LogOut size={18} />
@@ -92,24 +93,22 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
                 </div>
 
                 {/* Admin */}
-                <button
-                  onClick={() => setCurrentPage("admin")}
+                <Link
+                  to="/admin"
                   className="flex items-center space-x-1 bg-yellow-400 text-black px-3 py-1.5 rounded-lg hover:bg-yellow-300 transition shadow-md"
                 >
                   <Shield size={18} />
                   <span className="font-medium">Admin</span>
-                </button>
+                </Link>
               </>
-            )}
-
-            {!user && (
-              <button
-                onClick={() => setCurrentPage("login")}
+            ) : (
+              <Link
+                to="/login"
                 className="flex items-center space-x-2 bg-white text-blue-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition shadow-md"
               >
                 <User size={18} />
                 <span className="font-semibold">Login</span>
-              </button>
+              </Link>
             )}
           </div>
         </div>
