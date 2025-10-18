@@ -1,0 +1,58 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Wireless Headphones",
+      "category": "Electronics",
+      "price": 99,
+      "stock": 5,
+      "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop"
+    },
+    {
+      "id": "2",
+      "name": "Smart Watch",
+      "category": "Electronics",
+      "price": 299,
+      "stock": 3,
+      "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop"
+    },
+    {
+      "id": "3",
+      "name": "Laptop Backpack",
+      "category": "Accessories",
+      "price": 49,
+      "stock": 0,
+      "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop"
+    },
+    {
+      "id": "4",
+      "name": "USB-C Cable",
+      "category": "Accessories",
+      "price": 19,
+      "stock": 15,
+      "image": "https://images.unsplash.com/photo-1583573607873-94f521c49945?w=300&h=300&fit=crop"
+    }
+  ],
+  "orders": [
+    {
+      "id": "bdcb",
+      "userId": "JkLmKk3OezfMdNz9faSuANo9YJh2",
+      "items": [
+        {
+          "id": "4",
+          "name": "USB-C Cable",
+          "category": "Accessories",
+          "price": 19,
+          "stock": 15,
+          "image": "https://images.unsplash.com/photo-1583573607873-94f521c49945?w=300&h=300&fit=crop",
+          "quantity": 1
+        }
+      ],
+      "address": "123 Main Street, New York, NY 10001",
+      "total": 19,
+      "status": "On Process",
+      "date": "2025-10-18T12:05:39.269Z"
+    }
+  ],
+  "users": []
+}
